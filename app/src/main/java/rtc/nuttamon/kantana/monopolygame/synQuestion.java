@@ -2,13 +2,16 @@ package rtc.nuttamon.kantana.monopolygame;
 
 import android.content.Context;
 import android.os.AsyncTask;
-import android.speech.tts.Voice;
+
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 /**
  * Created by ILLUTION on 28/11/2559.
  */
 
-public class synQuestion extends AsyncTask<Voice, Voice, String>{
+public class synQuestion extends AsyncTask<Void, Void, String>{
 
     //Explicit
     private static final String urLJSON ="http://swiftcodingthai.com/nut/get_question.php";
@@ -18,11 +21,20 @@ public class synQuestion extends AsyncTask<Voice, Voice, String>{
         this.context = context;
     }
 
+
     @Override
-    protected String doInBackground(Voice... params) {
+    protected String doInBackground(Void... voids) {
+        try {
 
+            OkHttpClient okHttpClient = new OkHttpClient();
+            Request.Builder builder = new Request.Builder();
+            Request request = builder.url(urLJSON).build();
+            Response response = okHttpClient.newCall(request).execute();
+            return response.body().string();
 
-
-        return null;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 } // Main Class
